@@ -1,0 +1,16 @@
+[Unit]
+Description=stolon keeper
+Documentation=https://github.com/sorintlab/stolon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=postgres
+Group=postgres
+EnvironmentFile=-/etc/sysconfig/stolon-keeper
+ExecStart=/usr/bin/stolon-keeper $EXTRA_OPTS
+TimeoutStopSec=5s
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

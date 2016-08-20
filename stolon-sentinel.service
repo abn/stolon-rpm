@@ -1,0 +1,16 @@
+[Unit]
+Description=stolon sentinel
+Documentation=https://github.com/sorintlab/stolon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=stolon
+Group=stolon
+EnvironmentFile=-/etc/sysconfig/stolon-sentinel
+ExecStart=/usr/bin/stolon-sentinel $EXTRA_OPTS
+TimeoutStopSec=5s
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

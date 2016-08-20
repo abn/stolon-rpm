@@ -1,0 +1,16 @@
+[Unit]
+Description=stolon proxy
+Documentation=https://github.com/sorintlab/stolon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=stolon
+Group=stolon
+EnvironmentFile=-/etc/sysconfig/stolon-proxy
+ExecStart=/usr/bin/stolon-proxy $EXTRA_OPTS
+TimeoutStopSec=5s
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

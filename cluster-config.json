@@ -1,0 +1,10 @@
+{
+    "request_timeout": "10s",
+    "sleep_interval": "5s",
+    "keeper_fail_interval": "20s",
+    "max_standbys_per_sender": 3,
+    "synchronous_replication": false,
+    "init_with_multiple_keepers": false,
+    "use_pg_rewind": false,
+    "pg_parameters": null
+}
