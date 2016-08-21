@@ -7,8 +7,8 @@
 %define go_package_src %{go_path}/src/%{go_package}
 
 Name:           stolon
-Version:        0.2.0.%{shortcommit}
-Release:        1%{?dist}
+Version:        0.2.0
+Release:        1.%{shortcommit}%{?dist}
 Summary:        PostgreSQL cloud native High Availability
 
 Group:          System Environment/Daemons
@@ -32,15 +32,15 @@ Requires:      systemd glibc
 
 %package keeper
 Summary: stolon keeper
-Requires: stolon = %{version}
+Requires(pre): stolon = %{version}
 
 %package proxy
 Summary: stolon proxy
-Requires: stolon = %{version}
+Requires(pre): stolon = %{version}
 
 %package sentinel
 Summary: stolon sentinel
-Requires: stolon = %{version}
+Requires(pre): stolon = %{version}
 
 %description
 stolon is a cloud native PostgreSQL manager for PostgreSQL high availability.
@@ -68,13 +68,16 @@ cd %{go_package_src}
 bash build
 
 %install
-mkdir -p %{buildroot}/%{_bindir}
+install -d %{buildroot}/%{_bindir}
+install -d %{buildroot}/%{_sharedstatedir}/%{name}
 install %{go_package_src}/bin/stolonctl %{buildroot}/%{_bindir}
 
 # keeper
 install %{go_package_src}/bin/stolon-keeper %{buildroot}/%{_bindir}
 install -D %{SOURCE1} %{buildroot}/%{_unitdir}/%{name}-keeper.service
 install -D %{SOURCE2} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}-keeper
+install -d %{buildroot}/%{_sysconfdir}/%{name}/secrets
+touch %{buildroot}/%{_sysconfdir}/%{name}/secrets/pgpass.{postgres,replication}
 
 # proxy
 install %{go_package_src}/bin/stolon-proxy %{buildroot}/%{_bindir}
@@ -90,12 +93,13 @@ install -D %{SOURCE7} %{buildroot}/%{_sysconfdir}/%{name}/cluster-config.json
 %pre
 getent group %{name} >/dev/null || groupadd -r %{name}
 getent passwd %{name} >/dev/null || \
-    useradd -r -g %{name} -s /sbin/nologin \
+    useradd -r -g %{name} -d %{_sharedstatedir}/%{name} -s /sbin/nologin \
     -c "stolon user" %{name}
 exit 0
 
 %postun
-userdel %{name} && groupdel %{name}
+getent passwd %{name} >/dev/null && userdel %{name}
+getent group %{name} >/dev/null && groupdel %{name}
 
 %post keeper
 %systemd_post %{name}-keeper.service
@@ -116,7 +120,7 @@ userdel %{name} && groupdel %{name}
 %systemd_preun %{name}-proxy.service
 
 %post sentinel
-%systemd_po-st %{name}-sentinel.service
+%systemd_post %{name}-sentinel.service
 
 %preun sentinel
 %systemd_preun %{name}-sentinel.service
@@ -131,12 +135,16 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %attr(755, root, root) %{_bindir}/stolonctl
+%dir %attr(750, %{name}, %{name}) %{_sysconfdir}/%{name}
 
 %files keeper
 %defattr(-,root,root,-)
+%dir %attr(750, %{name}, %{name}) %{_sharedstatedir}/%{name}
 %attr(755, root, root) %{_bindir}/stolon-keeper
 %attr(644, root, root) %{_unitdir}/%{name}-keeper.service
 %config(noreplace) %attr(640, root, %{name}) %{_sysconfdir}/sysconfig/%{name}-keeper
+%config(noreplace) %attr(640, %{name}, %{name}) %{_sysconfdir}/%{name}/secrets/pgpass.postgres
+%config(noreplace) %attr(640, %{name}, %{name}) %{_sysconfdir}/%{name}/secrets/pgpass.replication
 
 %files proxy
 %defattr(-,root,root,-)
@@ -148,8 +156,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %attr(755, root, root) %{_bindir}/stolon-sentinel
 %attr(644, root, root) %{_unitdir}/%{name}-sentinel.service
-%config(noreplace) %attr(640, root, %{name}) %{_sysconfdir}/sysconfig/%{name}-sentinel
-%dir %attr(750, root, %{name}) %{_sysconfdir}/%{name}
+%config(noreplace) %attr(640, %{name}, %{name}) %{_sysconfdir}/sysconfig/%{name}-sentinel
 %attr(640, root, %{name}) %{_sysconfdir}/%{name}/cluster-config.json
 
 %doc

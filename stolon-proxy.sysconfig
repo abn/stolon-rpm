@@ -1,9 +1,16 @@
 # /etc/sysconfig/stolon-proxy
 
+# default configuration values
 STPROXY_CLUSTER_NAME=cluster01
-STPROXY_LISTEN_ADDRESS=0.0.0.0
+STPROXY_LISTEN_ADDRESS=127.0.0.1
 STPROXY_PORT=5432
+
+# store configuration
 STPROXY_STORE_BACKEND=consul
 STPROXY_STORE_ENDPOINTS=127.0.0.1:8500
+
+# set this for debugging
 # STPROXY_DEBUG=true
+
+# add any extra command line options to pass the stolon-keeper binary
 EXTRA_OPTS=
