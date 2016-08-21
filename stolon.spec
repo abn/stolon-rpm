@@ -8,7 +8,7 @@
 
 Name:           stolon
 Version:        0.2.0
-Release:        1.%{shortcommit}%{?dist}
+Release:        2.%{shortcommit}%{?dist}
 Summary:        PostgreSQL cloud native High Availability
 
 Group:          System Environment/Daemons
@@ -162,6 +162,9 @@ rm -rf %{buildroot}
 %doc
 
 %changelog
+* Sun Aug 21 2016 Arun Babu Neelicattu <arun.neelicattu@gmail.com> - 0.2.0-2.b240c37
+- clean up resources and add more comments
+
 * Sat Aug 20 2016 Arun Babu Neelicattu <arun.neelicattu@gmail.com> - 0.2.0.b240c37-1
 - intial version from master post 0.2.0 release
 
