@@ -1,4 +1,4 @@
-%global commit      b240c37889bc087ea6751bad22c49debdd3d243d
+%global commit      a3f139939760ceff62c060e677ef4db0645ce07d
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 %define debug_package %{nil}
@@ -7,8 +7,8 @@
 %define go_package_src %{go_path}/src/%{go_package}
 
 Name:           stolon
-Version:        0.2.0
-Release:        2.%{shortcommit}%{?dist}
+Version:        0.3.0
+Release:        1.%{shortcommit}%{?dist}
 Summary:        PostgreSQL cloud native High Availability
 
 Group:          System Environment/Daemons
@@ -162,9 +162,12 @@ rm -rf %{buildroot}
 %doc
 
 %changelog
+* Fri Sep 30 2016 Arun Babu Neelicattu <arun.neelicattu@gmail.com> - 0.3.0-1.a3f1399
+- update to v0.3.0
+
 * Sun Aug 21 2016 Arun Babu Neelicattu <arun.neelicattu@gmail.com> - 0.2.0-2.b240c37
 - clean up resources and add more comments
 
-* Sat Aug 20 2016 Arun Babu Neelicattu <arun.neelicattu@gmail.com> - 0.2.0.b240c37-1
+* Sat Aug 20 2016 Arun Babu Neelicattu <arun.neelicattu@gmail.com> - 0.2.0-1.b240c37
 - intial version from master post 0.2.0 release
 
