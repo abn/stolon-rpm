@@ -1,4 +1,4 @@
-%global commit      8420cb13a635fabe503848cbe51a0586828e5fd1
+%global commit      fec51408a83e6909c51e62ff54127d89748148fc
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 %define debug_package %{nil}
@@ -7,7 +7,7 @@
 %define go_package_src %{go_path}/src/%{go_package}
 
 Name:           stolon
-Version:        0.6.0
+Version:        0.7.0
 Release:        1.%{shortcommit}%{?dist}
 Summary:        PostgreSQL cloud native High Availability
 
@@ -65,7 +65,7 @@ cp -R * %{go_package_src}/.
 %build
 export GOPATH=%{go_path}
 cd %{go_package_src}
-bash build
+bash -x build
 
 %install
 install -d %{buildroot}/%{_bindir}
@@ -162,6 +162,9 @@ rm -rf %{buildroot}
 %doc
 
 %changelog
+* Mon Sep 04 2017 Gregory Collins <greg@gregorycollins.net> - 0.7.0-1.fec5140
+- upgrade to v0.7.0
+
 * Sat Jun 03 2017 Arun Babu Neelicattu <arun.neelicattu@gmail.com> - 0.6.0-1.8420cb1
 - upgrade to v0.6.0
 
