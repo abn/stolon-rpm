@@ -4,7 +4,7 @@ language: python
 env:
   global:
     - DOCKER_IMAGE=alectolytic/rpmbuilder
-    - COPR_REPOSITORY=repository
+    - COPR_REPOSITORY=stolon
     - OS_ARCH=x86_64
   matrix:
     - OS_TYPE=fedora OS_DIST=fedora OS_VERSION=27
@@ -22,4 +22,3 @@ after_success:
   - pip install copr-cli simplejson
   - openssl aes-256-cbc -K $encrypted_285d38bd1f45_key -iv $encrypted_285d38bd1f45_iv -in .copr.enc -out .copr -d
   - if [ ! -z "${TRAVIS_TAG}" ]; then copr-cli --config .copr build -r ${OS_DIST}-${OS_VERSION}-${OS_ARCH} ${COPR_REPOSITORY} *.src.rpm; fi
-
