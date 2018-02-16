@@ -1,4 +1,4 @@
-%global commit      9f38f4c12ac04ae47e5e192961ba24a944b40f11
+%global commit      9dbf32d26bcbc68ca1b977a8510b0b1634e4f557
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 %define debug_package %{nil}
@@ -7,7 +7,7 @@
 %define go_package_src %{go_path}/src/%{go_package}
 
 Name:           stolon
-Version:        0.8.0
+Version:        0.9.0
 Release:        1.%{shortcommit}%{?dist}
 Summary:        PostgreSQL cloud native High Availability
 
@@ -163,6 +163,9 @@ rm -rf %{buildroot}
 %doc
 
 %changelog
+* Fri Feb 16 2018 Arun Babu Neelicattu <arun.neelicattu@gmail.com> - 0.9.0-1.9dbf32d
+- upgrade to v0.9.0
+
 * Sat Jan 20 2018 Arun Babu Neelicattu <arun.neelicattu@gmail.com> - 0.8.0-1.9f38f4c
 - upgrade to v0.8.0
 
