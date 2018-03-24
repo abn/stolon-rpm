@@ -1,4 +1,4 @@
-%global commit      9dbf32d26bcbc68ca1b977a8510b0b1634e4f557
+%global commit      d07f290bcfabc0d5292c9b072509880e7d99f246
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 %define debug_package %{nil}
@@ -7,7 +7,7 @@
 %define go_package_src %{go_path}/src/%{go_package}
 
 Name:           stolon
-Version:        0.9.0
+Version:        0.10.0
 Release:        1.%{shortcommit}%{?dist}
 Summary:        PostgreSQL cloud native High Availability
 
@@ -22,7 +22,6 @@ Source4:        stolon-proxy.sysconfig
 Source5:        stolon-sentinel.service
 Source6:        stolon-sentinel.sysconfig
 Source7:        cluster-config.json
-Patch0:         00-git-version.patch
 
 BuildRequires: golang git
 BuildRequires: bash gcc-c++
@@ -66,7 +65,7 @@ cp -R * %{go_package_src}/.
 %build
 export GOPATH=%{go_path}
 cd %{go_package_src}
-bash build
+STOLON_VERSION=v%{version} bash build
 
 %install
 install -d %{buildroot}/%{_bindir}
@@ -163,6 +162,10 @@ rm -rf %{buildroot}
 %doc
 
 %changelog
+* Sat Mar 24 2018 Arun Babu Neelicattu <arun.neelicattu@gmail.com> - 0.10.0-1.d07f290
+- upgrade to v0.10.0
+- remove version patching
+
 * Fri Feb 16 2018 Arun Babu Neelicattu <arun.neelicattu@gmail.com> - 0.9.0-1.9dbf32d
 - upgrade to v0.9.0
 
